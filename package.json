@@ -1,0 +1,31 @@
+{
+  "name": "chainsage-backend",
+  "version": "1.0.0",
+  "description": "Backend API for ChainSage - 0G blockchain integration with AI classification",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "build": "echo 'No build step required'",
+    "test": "echo 'Tests coming soon'"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "dotenv": "^16.4.5",
+    "@google/generative-ai": "^0.21.0",
+    "ethers": "^6.13.2",
+    "ws": "^8.18.0",
+    "node-cron": "^3.0.3",
+    "winston": "^3.14.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": ["blockchain", "0g", "ai", "web3", "classification", "monitoring"]
+}

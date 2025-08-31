@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: chainsage-backend
+    env: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OG_RPC_URL
+        value: https://rpc-testnet.0g.ai
+      - key: OG_CHAIN_ID
+        value: 16600
+      - key: OG_PRIVATE_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: https://your-frontend-domain.com
+    healthCheckPath: /health
