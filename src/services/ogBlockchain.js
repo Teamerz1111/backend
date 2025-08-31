@@ -3,7 +3,7 @@ import { logger } from '../utils/logger.js';
 
 class OGBlockchainService {
   constructor() {
-    this.rpcUrl = process.env.OG_RPC_URL || 'https://rpc-testnet.0g.ai';
+    this.rpcUrl = process.env.OG_RPC_URL || 'https://chainscan-galileo.0g.ai';
     this.chainId = process.env.OG_CHAIN_ID || 16600;
     this.provider = new ethers.JsonRpcProvider(this.rpcUrl);
     
