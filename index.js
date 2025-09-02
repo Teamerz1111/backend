@@ -7,7 +7,7 @@ const app = express();
 // CORS Configuration
 const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(',') : [];
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === 'production') {
     console.log('Allowed Origins:', allowedOrigins);
 }
 
