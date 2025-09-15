@@ -3,16 +3,24 @@ import { logger } from '../utils/logger.js';
 
 class GeminiService {
   constructor() {
-    if (!process.env.GEMINI_API_KEY) {
-      throw new Error('GEMINI_API_KEY is required');
+    this.genAI = null;
+    this.model = null;
+  }
+
+  _initialize() {
+    if (!this.genAI) {
+      if (!process.env.GEMINI_API_KEY) {
+        throw new Error('GEMINI_API_KEY is required');
+      }
+      
+      this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+      this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
     }
-    
-    this.genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
   }
 
   async classifyTransaction(transactionData) {
     try {
+      this._initialize();
       const prompt = `
         Analyze this blockchain transaction and classify it as Normal, Suspicious, or Risky.
         
@@ -60,6 +68,7 @@ class GeminiService {
 
   async analyzeWalletActivity(walletData) {
     try {
+      this._initialize();
       const prompt = `
         Analyze this wallet's activity patterns and identify any unusual behavior.
         
