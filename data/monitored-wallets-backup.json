@@ -1,39 +1,15 @@
 [
   {
-    "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-    "type": "token",
+    "address": "0x5f565bae36bd373797afc1682a627cc05cc28600",
+    "type": "wallet",
     "threshold": 1000,
+    "chainId": "1",
     "status": "monitoring_active",
-    "addedAt": 1757904080221,
-    "lastChecked": 1757904080221,
+    "addedAt": 1757910954640,
+    "lastChecked": 1757910954640,
     "hasAlerts": false,
     "alertCount": 0,
-    "riskAnalysis": {
-      "isUnusual": false,
-      "anomalies": [],
-      "riskLevel": "low",
-      "confidence": 1,
-      "recommendations": []
-    },
-    "riskLevel": "low",
-    "riskScore": 25
-  },
-  {
-    "address": "0xb8c77482e45f1f44de1745f52c74426c631bdd52",
-    "type": "token",
-    "threshold": 1000,
-    "status": "monitoring_active",
-    "addedAt": 1757904967198,
-    "lastChecked": 1757904967198,
-    "hasAlerts": false,
-    "alertCount": 0,
-    "riskAnalysis": {
-      "isUnusual": false,
-      "anomalies": [],
-      "riskLevel": "low",
-      "confidence": 1,
-      "recommendations": []
-    },
+    "riskAnalysis": null,
     "riskLevel": "low",
     "riskScore": 25
   },
@@ -41,18 +17,13 @@
     "address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
     "type": "token",
     "threshold": 1000,
+    "chainId": "1",
     "status": "monitoring_active",
-    "addedAt": 1757905119994,
-    "lastChecked": 1757905119994,
+    "addedAt": 1757911104250,
+    "lastChecked": 1757911104250,
     "hasAlerts": false,
     "alertCount": 0,
-    "riskAnalysis": {
-      "isUnusual": false,
-      "anomalies": [],
-      "riskLevel": "low",
-      "confidence": 1,
-      "recommendations": []
-    },
+    "riskAnalysis": null,
     "riskLevel": "low",
     "riskScore": 25
   }
