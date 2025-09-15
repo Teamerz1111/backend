@@ -12,7 +12,7 @@ class BlockchainDataService {
     if (!this.etherscanApiKey) {
       this.etherscanApiKey = process.env.ETHERSCAN_API_KEY || 'YourApiKeyToken'; // Free tier
       this.etherscanBaseUrl = process.env.ETHERSCAN_BASE_URL || 'https://api.etherscan.io/v2/api';
-      this.requestDelay = 200; // 5 requests per second for free tier
+      this.requestDelay = 2000; // 5 requests per second for free tier
       this.chainId = process.env.ETHERSCAN_CHAIN_ID || '1'; // Default to Ethereum Mainnet
     }
   }

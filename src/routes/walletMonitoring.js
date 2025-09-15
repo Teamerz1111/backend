@@ -81,7 +81,7 @@ function generateFallbackAnalysis(walletData) {
 // Monitor a specific wallet address or contract
 router.post('/monitor/:address', asyncHandler(async (req, res) => {
   const { address } = req.params;
-  const { threshold = 1000, type = 'wallet', chainId = '1' } = req.body; // Default threshold, type, and chainId
+  const { threshold = 1000, type = 'wallet', chainId = '1', label } = req.body; // Default threshold, type, and chainId
   logger.info('req.body', req.body)
 
   if (!ethers.isAddress(address)) {
@@ -110,6 +110,7 @@ router.post('/monitor/:address', asyncHandler(async (req, res) => {
   // Add wallet/contract to monitoring list
   const monitoredItem = {
     address: address.toLowerCase(),
+    label: label || `${type.charAt(0).toUpperCase() + type.slice(1)} ${address.slice(0, 8)}...`, // Use provided label or generate default
     type: type, // 'wallet', 'token', 'contract', 'project'
     threshold,
     chainId: chainId, // Store chainId for this monitored item
@@ -163,6 +164,7 @@ router.post('/monitor/:address', asyncHandler(async (req, res) => {
   res.json({
     success: true,
     address: address,
+    label: monitoredItem.label,
     type: type,
     threshold,
     status: 'monitoring_active',
