@@ -39,7 +39,6 @@ class BlockchainDataService {
         address: params.address?.substring(0, 10) + '...'
       });
 
-      console.log('url.toString()', url.toString())
       const response = await fetch(url.toString());
       const data = await response.json();
 

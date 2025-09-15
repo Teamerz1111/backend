@@ -741,14 +741,7 @@ router.get('/activity-feed', asyncHandler(async (req, res) => {
 
   try {
     const monitoredWalletsArray = Array.from(monitoredWallets.values())
-      .filter(w => !chainId || w.chainId === chainId) // Filter by chainId if provided
-      .map(w => ({
-        address: w.address,
-        type: w.type,
-        chainId: w.chainId
-      }));
-    console.log('/activity-feed monitoredWallets', monitoredWallets)
-    console.log('/activity-feed monitoredWalletsArray', monitoredWalletsArray)
+      .filter(w => !chainId || w.chainId === chainId);
 
     logger.info('Activity feed request - monitoredWallets state', {
       mapSize: monitoredWallets.size,
@@ -774,22 +767,19 @@ router.get('/activity-feed', asyncHandler(async (req, res) => {
         console.log('item', item)
         logger.info('item', item)
         if (item.type === 'token') {
-          console.log('item-1')
           // For tokens, get token transfer activities
           activities = await blockchainDataService.getTokenContractActivity(
             item.address, 
             Math.floor(parseInt(limit) / monitoredWalletsArray.length) + 10
           );
         } else {
-          console.log('item-2')
           // For wallets, contracts, and projects, get wallet activities
           activities = await blockchainDataService.getAggregatedWalletActivity(
             item.address, 
             Math.floor(parseInt(limit) / monitoredWalletsArray.length) + 5
           );
         }
-        console.log('activities', activities)
-        logger.info('activities', activities)
+
         // Add monitoring context to each activity
         return activities.map(activity => ({
           ...activity,
@@ -808,11 +798,9 @@ router.get('/activity-feed', asyncHandler(async (req, res) => {
         return [];
       }
     });
-    console.log('promises', promises)
 
     // Fetch activities for all monitored items (wallets and tokens)
-    const itemActivities = await Promise.allSettled(promises);
-    console.log('itemActivities', itemActivities)
+    const itemActivities = await Promise.all(promises);
 
     // Flatten and sort all activities
     const allActivities = itemActivities.flat();
