@@ -2,10 +2,19 @@ import { logger } from '../utils/logger.js';
 
 class BlockchainDataService {
   constructor() {
-    // Using free Etherscan API - in production, consider using Alchemy/Infura
-    this.etherscanApiKey = process.env.ETHERSCAN_API_KEY || 'YourApiKeyToken'; // Free tier
-    this.etherscanBaseUrl = 'https://api.etherscan.io/api';
-    this.requestDelay = 200; // 5 requests per second for free tier
+    this.etherscanApiKey = null;
+    this.etherscanBaseUrl = null;
+    this.requestDelay = null;
+    this.chainId = null;
+  }
+
+  _initialize() {
+    if (!this.etherscanApiKey) {
+      this.etherscanApiKey = process.env.ETHERSCAN_API_KEY || 'YourApiKeyToken'; // Free tier
+      this.etherscanBaseUrl = process.env.ETHERSCAN_BASE_URL || 'https://api.etherscan.io/v2/api';
+      this.requestDelay = 200; // 5 requests per second for free tier
+      this.chainId = process.env.ETHERSCAN_CHAIN_ID || '1'; // Default to Ethereum Mainnet
+    }
   }
 
   async delay(ms) {
@@ -14,9 +23,11 @@ class BlockchainDataService {
 
   async makeEtherscanRequest(params) {
     try {
+      this._initialize();
       const url = new URL(this.etherscanBaseUrl);
       url.searchParams.append('apikey', this.etherscanApiKey);
-      
+      url.searchParams.append('chainid', this.chainId);
+
       Object.entries(params).forEach(([key, value]) => {
         url.searchParams.append(key, value);
       });
@@ -24,9 +35,11 @@ class BlockchainDataService {
       logger.info('Making Etherscan API request', { 
         module: params.module, 
         action: params.action,
+        chainId: this.chainId,
         address: params.address?.substring(0, 10) + '...'
       });
 
+      console.log('url.toString()', url.toString())
       const response = await fetch(url.toString());
       const data = await response.json();
 
@@ -39,13 +52,14 @@ class BlockchainDataService {
 
       return data.result;
     } catch (error) {
-      logger.error('Etherscan API request failed', { error: error.message, params });
+      logger.error('Etherscan API request failed', error);
       throw error;
     }
   }
 
   async getWalletTransactions(address, limit = 50) {
     try {
+      this._initialize();
       const transactions = await this.makeEtherscanRequest({
         module: 'account',
         action: 'txlist',
@@ -66,6 +80,7 @@ class BlockchainDataService {
 
   async getTokenTransfers(address, limit = 50) {
     try {
+      this._initialize();
       const transfers = await this.makeEtherscanRequest({
         module: 'account',
         action: 'tokentx',
@@ -86,6 +101,7 @@ class BlockchainDataService {
 
   async getNFTTransfers(address, limit = 50) {
     try {
+      this._initialize();
       const transfers = await this.makeEtherscanRequest({
         module: 'account',
         action: 'tokennfttx',
@@ -106,6 +122,7 @@ class BlockchainDataService {
 
   async getInternalTransactions(address, limit = 50) {
     try {
+      this._initialize();
       const transactions = await this.makeEtherscanRequest({
         module: 'account',
         action: 'txlistinternal',
@@ -201,6 +218,7 @@ class BlockchainDataService {
 
   async getWalletBalance(address) {
     try {
+      this._initialize();
       const balance = await this.makeEtherscanRequest({
         module: 'account',
         action: 'balance',
@@ -222,21 +240,19 @@ class BlockchainDataService {
 
   async getTokenContractActivity(contractAddress, limit = 50) {
     try {
+      this._initialize();
       // For token contracts, we want to get recent transfers involving this token
       const transfers = await this.makeEtherscanRequest({
         module: 'account',
         action: 'tokentx',
         contractaddress: contractAddress,
-        startblock: 0,
-        endblock: 99999999,
-        page: 1,
         offset: limit,
         sort: 'desc'
       });
 
       return this.formatTokenTransfers(transfers || []);
     } catch (error) {
-      logger.error('Failed to fetch token contract activity', { contractAddress, error: error.message });
+      logger.error('Failed to fetch token contract activity', { contractAddress, error: error });
       return [];
     }
   }
