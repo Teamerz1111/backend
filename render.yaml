@@ -13,11 +13,11 @@ services:
       - key: GEMINI_API_KEY
         sync: false
       - key: OG_RPC_URL
-        value: https://evmrpc-testnet.0g.ai
+        value: https://evmrpc.0g.ai
       - key: OG_CHAIN_ID
-        value: 16600
+        value: 16661
       - key: OG_PRIVATE_KEY
         sync: false
       - key: ALLOWED_ORIGINS
-        value: https://your-frontend-domain.com
+        value: https://chainsage-app.vercel.app,http://localhost:3000
     healthCheckPath: /health
